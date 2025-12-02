@@ -18,12 +18,11 @@ fn parse_file(content: String) -> List(#(Direction, Int)) {
   |> string.trim
   |> string.split(on: "\n")
   |> list.map(fn(s) {
-    let l_or_r = case string.starts_with(s, "L") {
-      True -> Left
-      False -> Right
+    case s {
+      "L" <> n -> #(Left, int.parse(n) |> result.unwrap(0))
+      "R" <> n -> #(Right, int.parse(n) |> result.unwrap(0))
+      _ -> panic
     }
-    let rotations = int.parse(string.drop_start(s, 1)) |> result.unwrap(0)
-    #(l_or_r, rotations)
   })
 }
 

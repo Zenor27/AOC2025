@@ -1,5 +1,6 @@
 import argv
 import days/day01/day01
+import days/day02/day02
 import gleam/dict
 import gleam/int
 import gleam/io
@@ -8,6 +9,7 @@ import gleam/result
 pub fn get_days() {
   dict.from_list([
     #("day01", #(day01.part1, day01.part2)),
+    #("day02", #(day02.part1, day02.part2)),
   ])
 }
 
@@ -24,12 +26,14 @@ pub fn main() -> Nil {
       let #(part1, part2) = day
       case part1() {
         Ok(res) -> io.println(day_arg <> " | PART1: " <> int.to_string(res))
-        Error(err) -> io.println("An error occurred " <> err)
+        Error(err) ->
+          io.println(day_arg <> " | PART1: " <> "An error occurred " <> err)
       }
 
       case part2() {
         Ok(res) -> io.println(day_arg <> " | PART2: " <> int.to_string(res))
-        Error(err) -> io.println("An error occurred " <> err)
+        Error(err) ->
+          io.println(day_arg <> " | PART2: " <> "An error occurred " <> err)
       }
     }
     Error(e) -> io.println(e)
