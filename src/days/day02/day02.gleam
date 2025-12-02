@@ -34,7 +34,8 @@ fn get_chunks(s: String, chunk_size: Int) -> List(String) {
 
 fn is_invalid(s: String, chunk_size: Int) -> Bool {
   let chunks = get_chunks(s, chunk_size)
-  chunks |> list.unique() |> list.length() == 1
+  let assert [first, ..rest] = chunks
+  rest |> list.all(fn(x) { first == x })
 }
 
 pub fn part1() -> Result(Int, String) {
