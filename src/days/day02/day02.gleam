@@ -1,3 +1,4 @@
+import gleam/erlang/process
 import gleam/int
 import gleam/list
 import gleam/result
@@ -68,28 +69,49 @@ fn get_divisors(x: Int) -> List(Int) {
   |> list.filter(fn(n) { x % n == 0 })
 }
 
-pub fn part2() -> Result(Int, String) {
-  let ranges = get_ranges()
-  let res =
-    ranges
-    |> list.fold(0, fn(acc, range) {
-      let #(lower_range, upper_range) = range
+fn invalid_ids_in_range(range: Range) -> Int {
+  let #(lower_range, upper_range) = range
 
-      let invalid_ids =
-        list.range(lower_range, upper_range)
-        |> list.filter(fn(id) {
-          let id_str = int.to_string(id)
-          let id_len = string.length(id_str)
-          case id_len {
-            1 -> False
-            _ ->
-              get_divisors(id_len)
-              |> list.any(fn(d) { is_invalid(id_str, id_len / d) })
-          }
-        })
-
-      acc + int.sum(invalid_ids)
+  let invalid_ids =
+    list.range(lower_range, upper_range)
+    |> list.filter(fn(id) {
+      let id_str = int.to_string(id)
+      let id_len = string.length(id_str)
+      case id_len {
+        1 -> False
+        _ ->
+          get_divisors(id_len)
+          |> list.any(fn(d) { is_invalid(id_str, id_len / d) })
+      }
     })
 
-  Ok(res)
+  int.sum(invalid_ids)
+}
+
+fn gather_invalid_ids(
+  subject: process.Subject(Int),
+  l: List(Int),
+  total_ranges: Int,
+) -> List(Int) {
+  case list.length(l) == total_ranges {
+    True -> l
+    False -> {
+      gather_invalid_ids(
+        subject,
+        [process.receive_forever(subject), ..l],
+        total_ranges,
+      )
+    }
+  }
+}
+
+pub fn part2() -> Result(Int, String) {
+  let ranges = get_ranges()
+  let subject = process.new_subject()
+  ranges
+  |> list.each(fn(r) {
+    process.spawn(fn() { process.send(subject, invalid_ids_in_range(r)) })
+  })
+
+  Ok(gather_invalid_ids(subject, [], list.length(ranges)) |> int.sum())
 }
