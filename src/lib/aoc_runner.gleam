@@ -79,7 +79,8 @@ fn run_day(runner: Runner, day: Int, subject: process.Subject(Report)) -> Nil {
       run_part(day, day.part2, subject)
     }
     Error(_) -> {
-      io.print_error("Day " <> int.to_string(day) <> " does not exist!")
+      io.println_error("Day " <> int.to_string(day) <> " does not exist!")
+      panic
     }
   }
 }
@@ -134,7 +135,7 @@ fn print_part_report(report: Report) -> Nil {
       let is_wrong_answer = list.contains(report.part.wrong_answers, res)
       case report.part.expected, is_wrong_answer {
         _, True ->
-          io.print_error(
+          io.println_error(
             "  ❌ Got " <> int.to_string(res) <> " which is incorrect...",
           )
         option.Some(_), _ -> {
@@ -146,7 +147,7 @@ fn print_part_report(report: Report) -> Nil {
       }
     }
     Error(err) -> {
-      io.print_error("  ❌ An error occurred while running part: " <> err)
+      io.println_error("  ❌ An error occurred while running part: " <> err)
     }
   }
   let duration_s = report.duration |> duration.to_seconds()
