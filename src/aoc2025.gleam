@@ -2,6 +2,7 @@ import argv
 import days/day01/day01
 import days/day02/day02
 import days/day03/day03
+import days/day04/day04
 import gleam/int
 import gleam/io
 import gleam/option
@@ -37,6 +38,11 @@ pub fn main() -> Nil {
       3,
       Part(1, day03.part1, option.Some(17_493), []),
       Part(2, day03.part2, option.Some(173_685_428_989_126), []),
+    ))
+    |> add_day(Day(
+      4,
+      Part(1, day04.part1, option.Some(1551), []),
+      Part(2, day04.part2, option.Some(9784), []),
     ))
 
   case day {

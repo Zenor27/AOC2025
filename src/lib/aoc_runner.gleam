@@ -138,6 +138,13 @@ fn print_part_report(report: Report) -> Nil {
           io.println_error(
             "  ❌ Got " <> int.to_string(res) <> " which is incorrect...",
           )
+        option.Some(expected), _ if expected != res ->
+          io.println_error(
+            "  ❌ Got "
+            <> int.to_string(res)
+            <> " but expected "
+            <> int.to_string(expected),
+          )
         option.Some(_), _ -> {
           io.println("  ✅ Got " <> int.to_string(res) <> " which is correct!")
         }
