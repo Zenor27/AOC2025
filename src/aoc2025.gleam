@@ -6,6 +6,7 @@ import days/day04/day04
 import days/day05/day05
 import days/day06/day06
 import days/day07/day07
+import days/day08/day08
 import gleam/int
 import gleam/io
 import gleam/option
@@ -63,6 +64,14 @@ pub fn main() -> Nil {
       Part(2, day07.part2, option.Some(10_357_305_916_520), [
         4_490_344_914_870_299_010_415_820_639_255_910_178_233_809_201_952_429_950_141_014,
       ]),
+    ))
+    |> add_day(Day(
+      8,
+      Part(1, day08.part1, option.Some(127_551), [
+        131_141_037_065_430_712_320_000_000,
+        1040,
+      ]),
+      Part(2, day08.part2, option.Some(2_347_225_200), []),
     ))
 
   case day {
